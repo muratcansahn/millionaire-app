@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-const Pyramid = () => {
-  const [questionNumber, setQuestionNumber] = useState(1);
+const Pyramid = ({ questionNumber }) => {
   const moneyPyramid = [
     { id: 1, amount: "$100" },
     { id: 2, amount: "$200" },
