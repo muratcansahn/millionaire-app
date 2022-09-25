@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import { Pyramid, Trivia } from "./components";
 function App() {
-  const [timeout, setTimeout] = useState(false);
+  const [stop, setStop] = useState(false);
   const [questionNumber, setQuestionNumber] = useState(1);
+  const [earned, setEarned] = useState(0);
   const data = [
     {
       id: 1,
@@ -46,22 +47,30 @@ function App() {
       ],
     },
   ];
+
   return (
     <div className="app">
       <div className="main">
-        <div className="top">
-          <div className="timer">30</div>
-        </div>
-        <div className="bottom">
-          <Trivia
-            data={data}
-            setTimeout={setTimeout}
-            questionNumber={questionNumber}
-            setQuestionNumber={setQuestionNumber}
-          />
-        </div>
+        {stop ? (
+          <h1 className="endText">You earned {earned}</h1>
+        ) : (
+          <>
+            <div className="top">
+              <div className="timer">30</div>
+            </div>
+            <div className="bottom">
+              <Trivia
+                data={data}
+                setStop={setStop}
+                questionNumber={questionNumber}
+                setQuestionNumber={setQuestionNumber}
+              />
+            </div>
+          </>
+        )}
       </div>
-      <Pyramid questionNumber={questionNumber} />
+
+      <Pyramid questionNumber={questionNumber} setEarned={setEarned} />
     </div>
   );
 }

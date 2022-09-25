@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
-const Pyramid = ({ questionNumber }) => {
+const Pyramid = ({ questionNumber, setEarned }) => {
   const moneyPyramid = [
     { id: 1, amount: "$100" },
     { id: 2, amount: "$200" },
@@ -18,7 +19,10 @@ const Pyramid = ({ questionNumber }) => {
     { id: 14, amount: "$500000" },
     { id: 15, amount: "$1000000" },
   ].reverse();
-
+  useEffect(() => {
+    questionNumber > 1 &&
+      setEarned(moneyPyramid.find((m) => m.id === questionNumber - 1)?.amount);
+  }, [questionNumber]);
   return (
     <div className="pyramid">
       <ul className="moneyList">
