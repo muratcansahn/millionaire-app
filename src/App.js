@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Pyramid, Trivia } from "./components";
+import { Pyramid, Trivia, Timer } from "./components";
 function App() {
   const [stop, setStop] = useState(false);
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -56,7 +56,9 @@ function App() {
         ) : (
           <>
             <div className="top">
-              <div className="timer">30</div>
+              <div className="timer">
+                <Timer setStop={setStop} questionNumber={questionNumber} />
+              </div>
             </div>
             <div className="bottom">
               <Trivia
