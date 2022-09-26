@@ -3,30 +3,35 @@ import useSound from "use-sound";
 import play from "../sounds/play.mp3";
 import correct from "../sounds/correct.mp3";
 import wrong from "../sounds/wrong.mp3";
+import axios from "axios";
+import useFetch from "../useFetch";
 
 const Trivia = (props) => {
-  const { data, setStop, setQuestionNumber, questionNumber } = props;
+  const { setStop, setQuestionNumber, questionNumber } = props;
   const [question, setQuestion] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [className, setClassName] = useState("answer");
+  // const [loading, setLoading] = useState(false);
+  // const [data, setData] = useState([]);
   const [letsPlay] = useSound(play);
   const [correctAnswer] = useSound(correct);
   const [wrongAnswer] = useSound(wrong);
+  const { data, loading, error } = useFetch("easy", 5);
+  const { data: mediumData } = useFetch("medium", 5);
+  const { data: hardData } = useFetch("hard", 5);
+  const allquestions = [...data, ...mediumData, ...hardData];
 
+  console.log("mediumData", mediumData);
   useEffect(() => {
     setQuestion(data[questionNumber - 1]);
   }, [data, questionNumber]);
-  console.log(selectedAnswer);
+  ///fetch questions
 
   const delay = (duration, callback) => {
     setTimeout(() => {
       callback();
     }, duration);
   };
-
-  // useEffect(() => {
-  //   letsPlay();
-  // }, [letsPlay]);
 
   const handleClick = (answer) => {
     setSelectedAnswer(answer);
@@ -46,10 +51,20 @@ const Trivia = (props) => {
       });
     });
   };
+  console.log("data", allquestions);
+  // console.log(data[questionNumber - 1].question);
+  const shuffledAnsvers = data[0]?.incorrect_answers
+    .concat(data[0]?.correct_answer)
+    .sort(() => Math.random() - 0.5);
+  // console.log("shuffledAnsvers", shuffledAnsvers);
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+  console.log(loading);
   return (
     <div className="trivia">
-      <div className="question">{question?.question}</div>
-      <div className="answers">
+      {/* <div className="question">{data[questionNumber - 1].question}</div> */}
+      {/* <div className="answers">
         {question?.answers.map((answer) => (
           <div
             className={selectedAnswer === answer ? className : "answer"}
@@ -58,7 +73,7 @@ const Trivia = (props) => {
             {answer.text}
           </div>
         ))}
-      </div>
+      </div>  */}
     </div>
   );
 };
